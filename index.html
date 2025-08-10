@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/viking-treble-clef-vector.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Resources</title>
+    <script type="module" src="/src/main.ts"></script>
+
+  </head>
+<body>
+<!-------- header -->
+<header class="container-fluid gx-0 header-color">
+  <div class="row align-items-center m-3">
+    <a class="header-logo gx-0 flex-shrink-0" href="https://tonaldrift.com" target="_blank">
+    <img width="75" height="75" 
+        src="/viking-treble-clef-vector.svg" alt="Tonal Drift logo">
+    </a>
+    <div class="col-8 col-md-10 text-center">
+      <span class="text-black header-title p-2 bg-alpha">Web Resources</span>
+    </div>
+  </div>
+</header>
+<!---------- main   -->
+<main class="container-fluid">
+  <div class="row m-3">
+    <!----- TAGS -->
+    <div class="col-3" x-data="tag_data" x-init="tags = await getTags()"
+      x-effect="tags = await getTags()">
+      <div class="container-fluid"> <!-- Options -->
+        <div class="row"> <!-- Tag Logic -->
+          <div class="d-inline-block col-3">Tag Logic</div>
+          <div class="form-check form-check-inline col-2">
+            <input type="radio" class="form-check-input" name="logic" x-model="$store.tagLogic" id="option1" autocomplete="off" value="and" checked>
+            <label class="form-check-label" for="option1">And</label>
+          </div>
+          <div class="form-check form-check-inline col-2">
+            <input type="radio" class="form-check-input" name="logic" x-model="$store.tagLogic" id="option2" autocomplete="off" value="or">
+            <label class="form-check-label" for="option2">Or</label>
+          </div>
+        </div> <!-- End Tag Logic -->
+        <div class="row mb-4">  <!-- Tag Sort -->
+          <div class="d-inline-block col-3">Tag Sort</div>
+          <div class="form-check form-check-inline col-2">
+            <input type="radio" class="form-check-input" name="tag-sort" x-model="sort" id="tag-sort1" autocomplete="off" value="count" checked>
+            <label class="form-check-label" for="tag-sort1">Count</label>
+          </div>
+          <div class="form-check form-check-inline col-2">
+            <input type="radio" class="form-check-input" name="tag-sort" x-model="sort" id="tag-sort2" autocomplete="off" value="name">
+            <label class="form-check-label" for="tag-sort2">Name</label>
+          </div>
+        </div> <!-- End Tag Sort -->
+      </div> <!-- End Options -->
+      <template x-for="tag in tags">
+        <div class="m-1">
+        <input type="checkbox" class="m-1" :id="`btn-check-${tag.id}`" 
+          x-model="$store.activeTags" :value="tag.name" autocomplete="off">
+        <label class="btn btn-primary" :for="`btn-check-${tag.id}`" 
+          x-text="`${tag.name} (${tag.count})`"></label>
+        </div>
+      </template>
+    </div> <!--- End TAGS -->
+
+    <!----- BOOKMARKS -->
+    <div class="col-9" x-data="bookmark_data" 
+        x-init="bookmarks = await getBookmarks()"
+        x-effect="bookmarks = await getBookmarks()" >
+        
+        <template x-for="bookmark in bookmarks">
+          <div class="card mt-1">
+            <div class="card-img-top px-3 pt-2 position-relative">
+              <p class="card-title h4 pb-0 mb-0" x-text="bookmark.title"></p>
+              <a class="card-subtitle mb-2 text-muted fst-italic stretched-link" target="_blank" 
+                :href="bookmark.url" x-text="bookmark.url"></a>            
+            </div>
+            <div class="card-body pb-0">
+              <p class="card-text" x-html="bookmark.description"></p>
+              <p class="mb-0">
+                <template x-for="tag in bookmark.tags">
+                  <span class="card-link text-black text-muted fst-italic" x-text="`#${tag}`"></span>
+                </template>
+              </p>
+            </div>
+          </div>
+        </template>
+    </div> <!--- End BOOKMARKS -->
+  </div>
+</main>
+
+<!-------- -->
+</body>
+</html>
