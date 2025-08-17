@@ -25,11 +25,14 @@
 <main class="container-fluid">
   <div class="row m-3">
     <!----- TAGS -->
-    <div class="col-3" x-data="tag_data" x-init="tags = await getTags()"
+    <div class="col-3 border-end border-info" x-data="tag_data" x-init="tags = await getTags()"
       x-effect="tags = await getTags()">
       <div class="container-fluid"> <!-- Options -->
-        <div class="row"> <!-- Tag Logic -->
-          <div class="d-inline-block col-3">Tag Logic</div>
+        <div class="row"
+            data-bs-toggle="tooltip" data-bs-placement="top" 
+            data-bs-title="How multiple tags are combined - 'And' means that the item must have all the tags, 'Or' means that the item must have at least one of the tags"
+            > <!-- Tag Logic -->
+          <div class="d-inline-block col-3">Logic</div>
           <div class="form-check form-check-inline col-2">
             <input type="radio" class="form-check-input" name="logic" x-model="$store.tagLogic" id="option1" autocomplete="off" value="and" checked>
             <label class="form-check-label" for="option1">And</label>
@@ -39,8 +42,11 @@
             <label class="form-check-label" for="option2">Or</label>
           </div>
         </div> <!-- End Tag Logic -->
-        <div class="row mb-4">  <!-- Tag Sort -->
-          <div class="d-inline-block col-3">Tag Sort</div>
+        <div class="row mb-2"
+            data-bs-toggle="tooltip" data-bs-placement="top" 
+            data-bs-title="How the tag list is sort - by count or alphabetically by name"
+            >  <!-- Tag Sort -->
+          <div class="d-inline-block col-3">Sort</div>
           <div class="form-check form-check-inline col-2">
             <input type="radio" class="form-check-input" name="tag-sort" x-model="sort" id="tag-sort1" autocomplete="off" value="count" checked>
             <label class="form-check-label" for="tag-sort1">Count</label>
@@ -51,14 +57,26 @@
           </div>
         </div> <!-- End Tag Sort -->
       </div> <!-- End Options -->
+      <div class="row mb-4"> <!-- Clear/Reset -->
+        <div class="col-6">
+          <button class="btn btn-primary" x-on:click="$store.activeTags = []"
+            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Clear all selected tags">Clear</button>
+        </div>
+        <div class="col-6">
+          <button class="btn btn-primary" x-on:click="$store.utils.clearTagForm($data)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Clear all selected tags">Reset</button>
+        </div>
+      </div> <!-- End Clear/Reset -->
+      <div class="list-group">
       <template x-for="tag in tags">
-        <div class="m-1">
-        <input type="checkbox" class="m-1" :id="`btn-check-${tag.id}`" 
+        <div class="me-1 mb-1 border rounded list-group-item list-group-item-action alternating-tag-list"
+          :class="{ 'tag-active': $store.activeTags.includes(tag.name)}">
+        <input type="checkbox" class="ms-1" :id="`btn-check-${tag.id}`" 
           x-model="$store.activeTags" :value="tag.name" autocomplete="off">
-        <label class="btn btn-primary" :for="`btn-check-${tag.id}`" 
+        <label :for="`btn-check-${tag.id}`" 
           x-text="`${tag.name} (${tag.count})`"></label>
         </div>
       </template>
+      </div>
     </div> <!--- End TAGS -->
 
     <!----- BOOKMARKS -->
@@ -77,7 +95,8 @@
               <p class="card-text" x-html="bookmark.description"></p>
               <p class="mb-0">
                 <template x-for="tag in bookmark.tags">
-                  <span class="card-link text-black text-muted fst-italic" x-text="`#${tag}`"></span>
+                    <a class="text-black text-muted fst-italic me-2 cursor-arrow" 
+                      x-on:click="$store.activeTags = [tag]" x-text="`#${tag}`"></a>
                 </template>
               </p>
             </div>

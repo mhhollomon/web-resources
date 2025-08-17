@@ -60,3 +60,23 @@
 .card-img-top {
     background-color: aliceblue;
 }
+
+.list-group-item.alternating-tag-list:nth-child(even) {
+    background-color: aliceblue;
+}
+.list-group-item.alternating-tag-list:nth-child(odd) {
+    background-color: #e9ecef;
+}
+
+.list-group-item.alternating-tag-list:nth-child(even).tag-active {
+    background-color: #d0e8ff;
+    font-weight: bold;
+}
+.list-group-item.alternating-tag-list:nth-child(odd).tag-active {
+    background-color: #d9dcdf;
+    font-weight: bold;
+}
+
+.cursor-arrow {
+        cursor: default;
+}
